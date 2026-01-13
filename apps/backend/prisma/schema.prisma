@@ -1,0 +1,515 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==========================================
+// ENUMS
+// ==========================================
+
+/// Papéis de usuário no sistema
+enum UserRole {
+  ADMIN        // Administrador - Acesso completo
+  MANAGER      // Gerente - Gerenciamento operacional
+  WAITER       // Garçom - Atendimento ao cliente
+  KITCHEN      // Cozinha - Preparação de alimentos
+  BAR          // Bar - Preparação de bebidas
+  CASHIER      // Caixa - Processamento de pagamentos
+  CUSTOMER     // Cliente - Acesso cliente
+}
+
+/// Status do pedido
+enum OrderStatus {
+  PENDING      // Aguardando processamento
+  CONFIRMED    // Confirmado
+  PREPARING    // Em preparação
+  READY        // Pronto para entrega
+  DELIVERED    // Entregue
+  COMPLETED    // Concluído
+  CANCELLED    // Cancelado
+}
+
+/// Status do pagamento
+enum PaymentStatus {
+  PENDING      // Pendente
+  CONFIRMED    // Confirmado
+  PROCESSING   // Processando
+  COMPLETED    // Completo
+  FAILED       // Falhou
+  REFUNDED     // Reembolsado
+}
+
+/// Método de pagamento
+enum PaymentMethod {
+  CASH         // Dinheiro
+  CREDIT_CARD  // Cartão de crédito
+  DEBIT_CARD   // Cartão de débito
+  PIX          // PIX
+  CHECK        // Cheque
+}
+
+/// Disponibilidade da mesa
+enum TableStatus {
+  AVAILABLE    // Disponível
+  OCCUPIED     // Ocupada
+  RESERVED     // Reservada
+  MAINTENANCE  // Em manutenção
+}
+
+/// Tipos de auditoria
+enum AuditAction {
+  CREATE
+  UPDATE
+  DELETE
+  LOGIN
+  LOGOUT
+  ORDER_CREATED
+  ORDER_UPDATED
+  PAYMENT_PROCESSED
+  EXPORT
+}
+
+// ==========================================
+// USERS (Autenticação e Autorização)
+// ==========================================
+
+model User {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Email do usuário (único)
+  email         String   @unique
+  
+  /// Nombre do usuário
+  name          String
+  
+  /// Senha com hash bcrypt
+  password      String
+  
+  /// Papel do usuário
+  role          UserRole
+  
+  /// Telefone (opcional)
+  phone         String?
+  
+  /// Se o usuário está ativo
+  isActive      Boolean  @default(true)
+  
+  /// Último login
+  lastLogin     DateTime?
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  /// Data de atualização
+  updatedAt     DateTime @updatedAt
+  
+  // Relações
+  auditLogs     AuditLog[]
+  orders        Order[]
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+// ==========================================
+// MENU (Cardápio)
+// ==========================================
+
+model Category {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Nome da categoria
+  name          String   @unique
+  
+  /// Descrição (opcional)
+  description   String?
+  
+  /// Ícone ou imagem (URL)
+  icon          String?
+  
+  /// Ordenação para exibição
+  displayOrder  Int      @default(0)
+  
+  /// Se está ativa
+  isActive      Boolean  @default(true)
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  /// Data de atualização
+  updatedAt     DateTime @updatedAt
+  
+  // Relações
+  items         MenuItem[]
+
+  @@index([isActive])
+  @@map("categories")
+}
+
+model MenuItem {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Nome do item
+  name          String
+  
+  /// Descrição do item
+  description   String?
+  
+  /// Preço em centavos (armazenar como inteiro para evitar problemas com float)
+  price         Int      // em centavos (e.g., 2500 = R$ 25.00)
+  
+  /// Imagem do item (URL)
+  imageUrl      String?
+  
+  /// Tempo médio de preparo em minutos
+  preparationTimeMinutes Int @default(15)
+  
+  /// Se o item está disponível
+  isAvailable   Boolean  @default(true)
+  
+  /// Se é um item vegetariano
+  isVegetarian  Boolean  @default(false)
+  
+  /// Se contém glúten
+  containsGluten Boolean @default(false)
+  
+  /// Calorias (opcional)
+  calories      Int?
+  
+  /// Categoria do item
+  categoryId    String
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  /// Data de atualização
+  updatedAt     DateTime @updatedAt
+  
+  // Relações
+  category      Category @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  orderItems    OrderItem[]
+
+  @@index([categoryId])
+  @@index([isAvailable])
+  @@map("menu_items")
+}
+
+// ==========================================
+// RESTAURANT OPERATIONS (Operações do Restaurante)
+// ==========================================
+
+model Table {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Número ou identificador da mesa
+  number        String   @unique
+  
+  /// Área/Seção do restaurante
+  area          String   // e.g., "Salão", "Varanda", "Privativo"
+  
+  /// Capacidade de pessoas
+  capacity      Int
+  
+  /// Status da mesa
+  status        TableStatus @default(AVAILABLE)
+  
+  /// Se está disponível para reserva
+  availableForReservation Boolean @default(true)
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  /// Data de atualização
+  updatedAt     DateTime @updatedAt
+  
+  // Relações
+  orders        Order[]
+
+  @@index([status])
+  @@index([area])
+  @@map("tables")
+}
+
+// ==========================================
+// ORDERS (Pedidos)
+// ==========================================
+
+model Order {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Número do pedido (para display)
+  orderNumber   String   @unique
+  
+  /// Mesa associada
+  tableId       String
+  
+  /// Usuário que criou o pedido
+  userId        String
+  
+  /// Status do pedido
+  status        OrderStatus @default(PENDING)
+  
+  /// Notas/observações
+  notes         String?
+  
+  /// Desconto aplicado em centavos
+  discountAmount Int     @default(0)
+  
+  /// Taxa de serviço em centavos
+  serviceChargeAmount Int @default(0)
+  
+  /// Total em centavos
+  totalAmount   Int      @default(0)
+  
+  /// Hora de início do pedido
+  startedAt     DateTime @default(now())
+  
+  /// Hora de preparação
+  preparedAt    DateTime?
+  
+  /// Hora de conclusão
+  completedAt   DateTime?
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  /// Data de atualização
+  updatedAt     DateTime @updatedAt
+  
+  // Relações
+  table         Table    @relation(fields: [tableId], references: [id], onDelete: Cascade)
+  user          User     @relation(fields: [userId], references: [id])
+  items         OrderItem[]
+  payments      Payment[]
+
+  @@index([tableId])
+  @@index([userId])
+  @@index([status])
+  @@index([createdAt])
+  @@map("orders")
+}
+
+model OrderItem {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Pedido associado
+  orderId       String
+  
+  /// Item do menu
+  menuItemId    String
+  
+  /// Quantidade
+  quantity      Int      @default(1)
+  
+  /// Preço unitário em centavos (pode diferir do preço atual do menu)
+  unitPrice     Int
+  
+  /// Notas especiais (sem alergênicos, temperado, etc)
+  notes         String?
+  
+  /// Status do item
+  status        OrderStatus @default(PENDING)
+  
+  /// Tempo de início de preparo
+  startedAt     DateTime?
+  
+  /// Tempo de conclusão de preparo
+  completedAt   DateTime?
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  /// Data de atualização
+  updatedAt     DateTime @updatedAt
+  
+  // Relações
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  item          MenuItem @relation(fields: [menuItemId], references: [id])
+
+  @@index([orderId])
+  @@index([menuItemId])
+  @@index([status])
+  @@map("order_items")
+}
+
+// ==========================================
+// PAYMENTS (Pagamentos)
+// ==========================================
+
+model Payment {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Pedido associado
+  orderId       String
+  
+  /// Método de pagamento
+  method        PaymentMethod
+  
+  /// Status do pagamento
+  status        PaymentStatus @default(PENDING)
+  
+  /// Valor em centavos
+  amount        Int
+  
+  /// Referência da transação (ex: ID do gateway de pagamento)
+  transactionId String?
+  
+  /// Descrição (ex: últimos 4 dígitos do cartão)
+  description   String?
+  
+  /// Data de pagamento
+  paidAt        DateTime?
+  
+  /// Motivo do reembolso (se aplicável)
+  refundReason  String?
+  
+  /// Data de reembolso
+  refundedAt    DateTime?
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  /// Data de atualização
+  updatedAt     DateTime @updatedAt
+  
+  // Relações
+  order         Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@index([orderId])
+  @@index([status])
+  @@index([method])
+  @@map("payments")
+}
+
+// ==========================================
+// AUDIT LOGS (Logs de Auditoria)
+// ==========================================
+
+model AuditLog {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Usuário que realizou a ação
+  userId        String
+  
+  /// Tipo de ação
+  action        AuditAction
+  
+  /// Entity type (ex: Order, MenuItem, User)
+  entityType    String
+  
+  /// Entity ID
+  entityId      String
+  
+  /// Dados anteriores (JSON)
+  oldData       Json?
+  
+  /// Novos dados (JSON)
+  newData       Json?
+  
+  /// Descrição da ação
+  description   String?
+  
+  /// IP do usuário
+  ipAddress     String?
+  
+  /// User Agent
+  userAgent     String?
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  // Relações
+  user          User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+  @@index([action])
+  @@index([entityType])
+  @@index([createdAt])
+  @@map("audit_logs")
+}
+
+// ==========================================
+// SYSTEM (Sistema)
+// ==========================================
+
+model SystemConfig {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Chave de configuração
+  key           String   @unique
+  
+  /// Valor da configuração
+  value         String
+  
+  /// Tipo da configuração (string, number, boolean, json)
+  type          String   @default("string")
+  
+  /// Descrição
+  description   String?
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  /// Data de atualização
+  updatedAt     DateTime @updatedAt
+
+  @@map("system_configs")
+}
+
+// ==========================================
+// WEBHOOKS (Integrações)
+// ==========================================
+
+model WebhookEvent {
+  /// Identificador único
+  id            String   @id @default(cuid())
+  
+  /// Tipo de evento
+  eventType     String   // ex: order.created, order.updated, payment.completed
+  
+  /// ID da entidade relacionada
+  entityId      String
+  
+  /// Dados do evento
+  data          Json
+  
+  /// Se foi enviado com sucesso
+  isProcessed   Boolean  @default(false)
+  
+  /// Número de tentativas
+  attempts      Int      @default(0)
+  
+  /// Próxima tentativa em
+  nextRetryAt   DateTime?
+  
+  /// Erro da última tentativa
+  lastError     String?
+  
+  /// Data de criação
+  createdAt     DateTime @default(now())
+  
+  /// Data de atualização
+  updatedAt     DateTime @updatedAt
+
+  @@index([eventType])
+  @@index([isProcessed])
+  @@index([createdAt])
+  @@map("webhook_events")
+}

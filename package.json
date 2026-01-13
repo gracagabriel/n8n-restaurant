@@ -1,0 +1,32 @@
+{
+  "name": "n8n-restaurant",
+  "version": "1.0.0",
+  "description": "Sistema completo de gestão para bar e restaurante de hotel",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:all": "npm install && npm install --prefix apps/backend && npm install --prefix apps/frontend",
+    "dev": "npm run dev:backend & npm run dev:frontend",
+    "dev:backend": "npm run dev --prefix apps/backend",
+    "dev:frontend": "npm run dev --prefix apps/frontend",
+    "build": "npm run build --prefix apps/backend && npm run build --prefix apps/frontend",
+    "test": "npm run test --prefix apps/backend && npm run test --prefix apps/frontend",
+    "test:backend": "npm run test --prefix apps/backend",
+    "test:frontend": "npm run test --prefix apps/frontend",
+    "lint": "npm run lint --prefix apps/backend && npm run lint --prefix apps/frontend",
+    "format": "npm run format --prefix apps/backend && npm run format --prefix apps/frontend",
+    "docker:up": "docker-compose up -d",
+    "docker:down": "docker-compose down",
+    "docker:logs": "docker-compose logs -f",
+    "docker:clean": "docker-compose down -v"
+  },
+  "keywords": [
+    "restaurant",
+    "management",
+    "nestjs",
+    "nextjs",
+    "postgresql"
+  ],
+  "author": "Gabriel",
+  "license": "MIT"
+}

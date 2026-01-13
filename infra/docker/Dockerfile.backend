@@ -1,0 +1,39 @@
+# Build stage
+FROM node:18-alpine AS builder
+
+WORKDIR /app
+
+# Copiar package.json e lock
+COPY package*.json ./
+COPY apps/backend/package*.json ./apps/backend/
+
+# Instalar dependências
+RUN npm ci --only=production && \
+    npm ci --prefix apps/backend --only=production && \
+    npm install -g @nestjs/cli
+
+# Copiar código-fonte
+COPY apps/backend ./
+
+# Build
+RUN npm run build --prefix .
+
+# Production stage
+FROM node:18-alpine
+
+WORKDIR /app
+
+ENV NODE_ENV=production
+
+# Instalar apenas dependências de produção
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/prisma ./prisma
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD node -e "require('http').get('http://localhost:3000/health', (r) => {if (r.statusCode !== 200) throw new Error(r.statusCode)})"
+
+EXPOSE 3000
+
+CMD ["node", "dist/main.js"]

@@ -1,0 +1,3 @@
+{
+  "seed": "ts-node --loader ts-node/esm prisma/seed.ts"
+}
