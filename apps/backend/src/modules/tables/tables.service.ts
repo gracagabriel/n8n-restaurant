@@ -4,6 +4,7 @@
 
 import { Injectable, NotFoundException, ConflictException } from '@nestjs/common';
 import { DatabaseService } from '../../database/database.service';
+import { TableStatus } from '@prisma/client';
 
 @Injectable()
 export class TablesService {
@@ -12,7 +13,7 @@ export class TablesService {
   /**
    * Criar nova mesa
    */
-  async create(data: { number: number; capacity: number; location?: string }) {
+  async create(data: { number: string; capacity: number; area?: string }) {
     // Verificar se mesa já existe
     const existing = await this.prisma.table.findUnique({
       where: { number: data.number },
@@ -26,7 +27,7 @@ export class TablesService {
       data: {
         number: data.number,
         capacity: data.capacity,
-        location: data.location || '',
+        area: data.area || 'Salão',
         status: 'AVAILABLE',
       },
     });
@@ -39,7 +40,7 @@ export class TablesService {
     return this.prisma.table.findMany({
       skip,
       take,
-      where: status ? { status } : {},
+      where: status ? { status: status as TableStatus } : {},
       include: {
         orders: true,
       },
@@ -68,7 +69,7 @@ export class TablesService {
   /**
    * Atualizar mesa
    */
-  async update(id: string, data: { number?: number; capacity?: number; location?: string; status?: string }) {
+  async update(id: string, data: { number?: string; capacity?: number; area?: string; status?: TableStatus }) {
     const table = await this.findById(id);
 
     return this.prisma.table.update({

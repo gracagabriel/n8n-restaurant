@@ -42,10 +42,12 @@ export class CategoriesController {
   @Get()
   @ApiOperation({ summary: 'Listar todas as categorias' })
   async findAll(
-    @Query('skip') skip: number = 0,
-    @Query('take') take: number = 10,
+    @Query('skip') skip?: string,
+    @Query('take') take?: string,
   ) {
-    return this.categoriesService.findAll(skip, take);
+    const skipNum = skip ? parseInt(skip, 10) : 0;
+    const takeNum = take ? parseInt(take, 10) : 10;
+    return this.categoriesService.findAll(skipNum, takeNum);
   }
 
   /**

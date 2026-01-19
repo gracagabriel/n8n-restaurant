@@ -17,7 +17,7 @@ export class MenuItemsService {
     description?: string;
     price: number;
     categoryId: string;
-    image?: string;
+    imageUrl?: string;
   }) {
     // Verificar se categoria existe
     const category = await this.prisma.category.findUnique({
@@ -33,7 +33,7 @@ export class MenuItemsService {
         name: data.name,
         description: data.description || '',
         price: data.price,
-        image: data.image || '',
+        imageUrl: data.imageUrl || '',
         categoryId: data.categoryId,
       },
     });
