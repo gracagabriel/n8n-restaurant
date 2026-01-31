@@ -8,6 +8,7 @@ async function main() {
     if (process.env.NODE_ENV === 'development') {
         await prisma.auditLog.deleteMany();
         await prisma.webhookEvent.deleteMany();
+        await prisma.systemConfig.deleteMany();
         await prisma.payment.deleteMany();
         await prisma.orderItem.deleteMany();
         await prisma.order.deleteMany();
@@ -18,11 +19,13 @@ async function main() {
         console.log('✓ Dados anteriores removidos');
     }
     // 1. Criar usuários
+    // Senha: admin123
+    const BCRYPT_HASH = '$2b$10$lQxancfdOSNoitW685A81eH6htALDly21JD1W6/pItN2ZNnHXyPTi';
     const adminUser = await prisma.user.create({
         data: {
             email: 'admin@restaurant.com',
             name: 'Administrador',
-            password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK', // admin123 (bcrypt)
+            password: BCRYPT_HASH,
             role: 'ADMIN',
             phone: '11999999999',
         },
@@ -31,7 +34,7 @@ async function main() {
         data: {
             email: 'gerente@restaurant.com',
             name: 'Gerente',
-            password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK',
+            password: BCRYPT_HASH,
             role: 'MANAGER',
             phone: '11988888888',
         },
@@ -40,7 +43,7 @@ async function main() {
         data: {
             email: 'garcom@restaurant.com',
             name: 'Garçom',
-            password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK',
+            password: BCRYPT_HASH,
             role: 'WAITER',
             phone: '11987654321',
         },
@@ -49,7 +52,7 @@ async function main() {
         data: {
             email: 'cozinha@restaurant.com',
             name: 'Cozinha',
-            password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK',
+            password: BCRYPT_HASH,
             role: 'KITCHEN',
         },
     });
@@ -57,7 +60,7 @@ async function main() {
         data: {
             email: 'bar@restaurant.com',
             name: 'Bar',
-            password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK',
+            password: BCRYPT_HASH,
             role: 'BAR',
         },
     });

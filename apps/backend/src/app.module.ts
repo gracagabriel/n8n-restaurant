@@ -16,6 +16,8 @@ import { TablesModule } from './modules/tables/tables.module';
 import { OrdersModule } from './modules/orders/orders.module';
 import { PaymentsModule } from './modules/payments/payments.module';
 import { EventsModule } from './modules/events/events.module';
+import { EventsGatewayModule } from './gateways/events.module';
+import { AdminModule } from './modules/admin/admin.module';
 
 @Module({
   imports: [
@@ -58,6 +60,12 @@ import { EventsModule } from './modules/events/events.module';
 
     // Events Module
     EventsModule,
+
+    // Events Gateway Module (WebSocket)
+    EventsGatewayModule,
+
+    // Admin Module (Dashboard, KDS, ControlPanel)
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [],
