@@ -10,6 +10,12 @@ import { AppController } from './app.controller';
 import { databaseConfig, jwtConfig, appConfig, redisConfig } from './config';
 import { UsersModule } from './modules/users/users.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CategoriesModule } from './modules/categories/categories.module';
+import { MenuItemsModule } from './modules/menu-items/menu-items.module';
+import { TablesModule } from './modules/tables/tables.module';
+import { OrdersModule } from './modules/orders/orders.module';
+import { PaymentsModule } from './modules/payments/payments.module';
+import { EventsModule } from './modules/events/events.module';
 
 @Module({
   imports: [
@@ -34,6 +40,24 @@ import { AuthModule } from './modules/auth/auth.module';
 
     // Auth Module
     AuthModule,
+
+    // Categories Module
+    CategoriesModule,
+
+    // Menu Items Module
+    MenuItemsModule,
+
+    // Tables Module
+    TablesModule,
+
+    // Orders Module
+    OrdersModule,
+
+    // Payments Module
+    PaymentsModule,
+
+    // Events Module
+    EventsModule,
   ],
   controllers: [AppController],
   providers: [],

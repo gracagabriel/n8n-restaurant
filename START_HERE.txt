@@ -101,11 +101,11 @@
 
   Email                      Senha     Papel
   ─────────────────────────────────────────────────
-  admin@restaurant.local     admin123  ADMIN
-  gerente@restaurant.local   admin123  MANAGER
-  garcom@restaurant.local    admin123  WAITER
-  cozinha@restaurant.local   admin123  KITCHEN
-  bar@restaurant.local       admin123  BAR
+  admin@restaurant.com     admin123  ADMIN
+  gerente@restaurant.com   admin123  MANAGER
+  garcom@restaurant.com    admin123  WAITER
+  cozinha@restaurant.com   admin123  KITCHEN
+  bar@restaurant.com       admin123  BAR
 
 ═══════════════════════════════════════════════════════════════════════════════
 📚 DOCUMENTAÇÃO DISPONÍVEL

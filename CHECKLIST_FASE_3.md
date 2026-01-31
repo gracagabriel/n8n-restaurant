@@ -10,16 +10,16 @@ Acompanhe seu progresso na **Fase 3: Controllers de Domínio**
 ⏱️ Horário: ________
 
 1.1 - Criar CategoriesService:
-  [ ] Criou arquivo: src/modules/categories/categories.service.ts
-  [ ] Implementou: create(), findAll(), findById(), update(), delete()
-  [ ] Implementou: countItems()
+  [x] Criou arquivo: src/modules/categories/categories.service.ts
+  [x] Implementou: create(), findAll(), findById(), update(), delete()
+  [x] Implementou: countItems()
   
 1.2 - Criar CategoriesModule:
-  [ ] Criou arquivo: src/modules/categories/categories.module.ts
-  [ ] Importou DatabaseModule
-  [ ] Exportou CategoriesService
+  [x] Criou arquivo: src/modules/categories/categories.module.ts
+  [x] Importou DatabaseModule
+  [x] Exportou CategoriesService
   
-Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
+Status: [x] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ```
 
 ---
@@ -30,17 +30,17 @@ Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ⏱️ Horário: ________
 
 2.1 - Criar CategoriesController:
-  [ ] Criou arquivo: src/modules/categories/categories.controller.ts
-  [ ] Implementou POST /categories (protegido: ADMIN, MANAGER)
-  [ ] Implementou GET /categories (público)
-  [ ] Implementou GET /categories/:id (público)
-  [ ] Implementou PUT /categories/:id (protegido: ADMIN, MANAGER)
-  [ ] Implementou DELETE /categories/:id (protegido: ADMIN)
+  [x] Criou arquivo: src/modules/categories/categories.controller.ts
+  [x] Implementou POST /categories (protegido: ADMIN, MANAGER)
+  [x] Implementou GET /categories (público)
+  [x] Implementou GET /categories/:id (público)
+  [x] Implementou PUT /categories/:id (protegido: ADMIN, MANAGER)
+  [x] Implementou DELETE /categories/:id (protegido: ADMIN)
   
 2.2 - Atualizar CategoriesModule:
-  [ ] Adicionou CategoriesController aos controllers
+  [x] Adicionou CategoriesController aos controllers
   
-Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
+Status: [x] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ```
 
 ---
@@ -51,16 +51,16 @@ Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ⏱️ Horário: ________
 
 3.1 - Criar MenuItemsService:
-  [ ] Criou arquivo: src/modules/menu-items/menu-items.service.ts
-  [ ] Implementou: create(), findAll(), findById(), update(), delete()
-  [ ] Implementou: findByCategory()
+  [x] Criou arquivo: src/modules/menu-items/menu-items.service.ts
+  [x] Implementou: create(), findAll(), findById(), update(), delete()
+  [x] Implementou: findByCategory()
   
 3.2 - Criar MenuItemsModule:
-  [ ] Criou arquivo: src/modules/menu-items/menu-items.module.ts
-  [ ] Importou DatabaseModule
-  [ ] Exportou MenuItemsService
+  [x] Criou arquivo: src/modules/menu-items/menu-items.module.ts
+  [x] Importou DatabaseModule
+  [x] Exportou MenuItemsService
   
-Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
+Status: [x] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ```
 
 ---
@@ -71,18 +71,18 @@ Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ⏱️ Horário: ________
 
 4.1 - Criar MenuItemsController:
-  [ ] Criou arquivo: src/modules/menu-items/menu-items.controller.ts
-  [ ] Implementou POST /menu-items (protegido: ADMIN, MANAGER)
-  [ ] Implementou GET /menu-items (público, com filtro)
-  [ ] Implementou GET /menu-items/:id (público)
-  [ ] Implementou PUT /menu-items/:id (protegido: ADMIN, MANAGER)
-  [ ] Implementou DELETE /menu-items/:id (protegido: ADMIN)
-  [ ] Implementou GET /menu-items/category/:categoryId (público)
+  [x] Criou arquivo: src/modules/menu-items/menu-items.controller.ts
+  [x] Implementou POST /menu-items (protegido: ADMIN, MANAGER)
+  [x] Implementou GET /menu-items (público, com filtro)
+  [x] Implementou GET /menu-items/:id (público)
+  [x] Implementou PUT /menu-items/:id (protegido: ADMIN, MANAGER)
+  [x] Implementou DELETE /menu-items/:id (protegido: ADMIN)
+  [x] Implementou GET /menu-items/category/:categoryId (público)
   
 4.2 - Atualizar MenuItemsModule:
-  [ ] Adicionou MenuItemsController aos controllers
+  [x] Adicionou MenuItemsController aos controllers
   
-Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
+Status: [x] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ```
 
 ---
@@ -93,16 +93,16 @@ Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ⏱️ Horário: ________
 
 5.1 - Criar TablesService:
-  [ ] Criou arquivo: src/modules/tables/tables.service.ts
-  [ ] Implementou: create(), findAll(), findById(), update(), delete()
-  [ ] Implementou: markOccupied(), markAvailable()
+  [x] Criou arquivo: src/modules/tables/tables.service.ts
+  [x] Implementou: create(), findAll(), findById(), update(), delete()
+  [x] Implementou: markOccupied(), markAvailable()
   
 5.2 - Criar TablesModule:
-  [ ] Criou arquivo: src/modules/tables/tables.module.ts
-  [ ] Importou DatabaseModule
-  [ ] Exportou TablesService
+  [x] Criou arquivo: src/modules/tables/tables.module.ts
+  [x] Importou DatabaseModule
+  [x] Exportou TablesService
   
-Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
+Status: [x] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ```
 
 ---
@@ -113,19 +113,19 @@ Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ⏱️ Horário: ________
 
 6.1 - Criar TablesController:
-  [ ] Criou arquivo: src/modules/tables/tables.controller.ts
-  [ ] Implementou POST /tables (protegido: ADMIN, MANAGER)
-  [ ] Implementou GET /tables (público, com filtro por status)
-  [ ] Implementou GET /tables/:id (público)
-  [ ] Implementou PUT /tables/:id (protegido: ADMIN, MANAGER)
-  [ ] Implementou DELETE /tables/:id (protegido: ADMIN)
-  [ ] Implementou PUT /tables/:id/occupy (protegido: autenticado)
-  [ ] Implementou PUT /tables/:id/release (protegido: autenticado)
+  [x] Criou arquivo: src/modules/tables/tables.controller.ts
+  [x] Implementou POST /tables (protegido: ADMIN, MANAGER)
+  [x] Implementou GET /tables (público, com filtro por status)
+  [x] Implementou GET /tables/:id (público)
+  [x] Implementou PUT /tables/:id (protegido: ADMIN, MANAGER)
+  [x] Implementou DELETE /tables/:id (protegido: ADMIN)
+  [x] Implementou PUT /tables/:id/occupy (protegido: autenticado)
+  [x] Implementou PUT /tables/:id/release (protegido: autenticado)
   
 6.2 - Atualizar TablesModule:
-  [ ] Adicionou TablesController aos controllers
+  [x] Adicionou TablesController aos controllers
   
-Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
+Status: [x] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ```
 
 ---
@@ -136,17 +136,17 @@ Status: [ ] ✅ Completo | [ ] ⏳ Em progresso | [ ] ❌ Erro
 ⏱️ Horário: ________
 
 7.1 - Atualizar AppModule:
-  [ ] Importou CategoriesModule
-  [ ] Importou MenuItemsModule
-  [ ] Importou TablesModule
+  [x] Importou CategoriesModule
+  [x] Importou MenuItemsModule
+  [x] Importou TablesModule
   
 7.2 - Compilar:
-  [ ] Executou: npx tsc
-  [ ] Resultado: ✅ Sem erros
+  [x] Executou: npx tsc
+  [x] Resultado: ✅ Sem erros
   
 7.3 - Iniciar servidor:
-  [ ] Executou: node dist/main.js
-  [ ] Servidor rodando em http://localhost:3000
+  [ ] Executou: npm run start:dev ou npm run build && node dist/main
+  [ ] Servidor rodando (compilação com avisos de TypeScript, mas funcionando)
   
 7.4 - Testar Endpoints:
   [ ] POST /api/categories (criar) - 201

@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Sistema completo de gestão para bar e restaurante de hotel",
   "private": true,
-  "type": "module",
   "scripts": {
     "install:all": "npm install && npm install --prefix apps/backend && npm install --prefix apps/frontend",
     "dev": "npm run dev:backend & npm run dev:frontend",

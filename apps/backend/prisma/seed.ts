@@ -22,7 +22,7 @@ async function main() {
   // 1. Criar usuários
   const adminUser = await prisma.user.create({
     data: {
-      email: 'admin@restaurant.local',
+      email: 'admin@restaurant.com',
       name: 'Administrador',
       password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK', // admin123 (bcrypt)
       role: 'ADMIN',
@@ -32,7 +32,7 @@ async function main() {
 
   const managerUser = await prisma.user.create({
     data: {
-      email: 'gerente@restaurant.local',
+      email: 'gerente@restaurant.com',
       name: 'Gerente',
       password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK',
       role: 'MANAGER',
@@ -42,7 +42,7 @@ async function main() {
 
   const waiterUser = await prisma.user.create({
     data: {
-      email: 'garcom@restaurant.local',
+      email: 'garcom@restaurant.com',
       name: 'Garçom',
       password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK',
       role: 'WAITER',
@@ -52,7 +52,7 @@ async function main() {
 
   const kitchenUser = await prisma.user.create({
     data: {
-      email: 'cozinha@restaurant.local',
+      email: 'cozinha@restaurant.com',
       name: 'Cozinha',
       password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK',
       role: 'KITCHEN',
@@ -61,7 +61,7 @@ async function main() {
 
   const barUser = await prisma.user.create({
     data: {
-      email: 'bar@restaurant.local',
+      email: 'bar@restaurant.com',
       name: 'Bar',
       password: '$2b$10$0o5yfH1S..p6GhQb0u9wOe7v2U4qVHjN2RqO3.R5Jmz.dW4mxJTSK',
       role: 'BAR',

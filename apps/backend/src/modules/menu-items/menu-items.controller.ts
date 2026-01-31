@@ -51,11 +51,13 @@ export class MenuItemsController {
   @Get()
   @ApiOperation({ summary: 'Listar itens do cardápio' })
   async findAll(
-    @Query('skip') skip: number = 0,
-    @Query('take') take: number = 20,
+    @Query('skip') skip?: string,
+    @Query('take') take?: string,
     @Query('categoryId') categoryId?: string,
   ) {
-    return this.menuItemsService.findAll(skip, take, categoryId);
+    const skipNum = skip ? parseInt(skip, 10) : 0;
+    const takeNum = take ? parseInt(take, 10) : 20;
+    return this.menuItemsService.findAll(skipNum, takeNum, categoryId);
   }
 
   /**
